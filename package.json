@@ -1,0 +1,21 @@
+{
+  "name": "rnd-agent-fixture-provider",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public provider fixture for the R&D agent (Track B). It deploys nothing and holds nothing secret; its published contract is contract/operations.json.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit --noUnusedLocals --noUnusedParameters --noImplicitReturns",
+    "test": "tsc -p tsconfig.json && node --test \"dist/**/*.spec.js\"",
+    "start": "node dist/server.js"
+  },
+  "devDependencies": {
+    "@types/node": "22.7.5",
+    "typescript": "5.6.3"
+  }
+}
