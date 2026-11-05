@@ -3,6 +3,8 @@
  * contract.spec.ts holds the two to each other: an operation added here must be published there, and the reverse.
  */
 
+const { version } = require('../package.json') as { version: string }
+
 export interface RouteAnswer {
   readonly status: number
   readonly body: Record<string, unknown>
@@ -12,6 +14,7 @@ export type Route = () => RouteAnswer
 
 export const routes: Readonly<Record<string, Route>> = Object.freeze({
   'GET /health': (): RouteAnswer => ({ status: 200, body: { status: 'ok' } }),
+  'GET /version': (): RouteAnswer => ({ status: 200, body: { version } }),
 })
 
 /** The answer for a request: its route's, or 404. */
