@@ -20,10 +20,10 @@ test('contract/operations.json publishes exactly the operations the provider ser
   assert.deepEqual(listed, served)
 })
 
-test('each published operation answers its published status', () => {
+test('each published operation answers exactly its published response, status and body', () => {
   for (const op of published.operations) {
     const route = routes[`${op.method} ${op.path}`]
     assert.ok(route, `${op.method} ${op.path} is served`)
-    assert.equal(route().status, op.response.status)
+    assert.deepEqual(route(), op.response, `${op.method} ${op.path} answers what contract/operations.json publishes`)
   }
 })
