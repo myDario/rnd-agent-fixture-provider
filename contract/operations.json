@@ -1,0 +1,13 @@
+{
+  "service": "rnd-agent-fixture-provider",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "response": {
+        "status": 200,
+        "body": { "status": "ok" }
+      }
+    }
+  ]
+}
