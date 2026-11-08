@@ -16,6 +16,7 @@ export const routes: Readonly<Record<string, Route>> = Object.freeze({
   'GET /health': (): RouteAnswer => ({ status: 200, body: { status: 'ok' } }),
   'GET /version': (): RouteAnswer => ({ status: 200, body: { version } }),
   'GET /ready': (): RouteAnswer => ({ status: 200, body: { ready: true } }),
+  'GET /ping': (): RouteAnswer => ({ status: 200, body: { pong: true } }),
 })
 
 /** The answer for a request: its route's, or 404. */
