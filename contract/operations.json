@@ -16,6 +16,14 @@
         "status": 200,
         "body": { "version": "1.0.0" }
       }
+    },
+    {
+      "method": "GET",
+      "path": "/ready",
+      "response": {
+        "status": 200,
+        "body": { "ready": true }
+      }
     }
   ]
 }
