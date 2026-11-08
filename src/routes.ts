@@ -15,6 +15,7 @@ export type Route = () => RouteAnswer
 export const routes: Readonly<Record<string, Route>> = Object.freeze({
   'GET /health': (): RouteAnswer => ({ status: 200, body: { status: 'ok' } }),
   'GET /version': (): RouteAnswer => ({ status: 200, body: { version } }),
+  'GET /ready': (): RouteAnswer => ({ status: 200, body: { ready: true } }),
 })
 
 /** The answer for a request: its route's, or 404. */
