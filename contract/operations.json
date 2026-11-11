@@ -32,6 +32,14 @@
         "status": 200,
         "body": { "pong": true }
       }
+    },
+    {
+      "method": "GET",
+      "path": "/limits",
+      "response": {
+        "status": 200,
+        "body": { "maxItems": 100 }
+      }
     }
   ]
 }
