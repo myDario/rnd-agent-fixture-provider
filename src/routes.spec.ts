@@ -10,6 +10,10 @@ test('GET /ping answers 200 {"pong":true}', () => {
   assert.deepEqual(answer('GET', '/ping'), { status: 200, body: { pong: true } })
 })
 
+test('GET /limits answers 200 {"maxItems":100}', () => {
+  assert.deepEqual(answer('GET', '/limits'), { status: 200, body: { maxItems: 100 } })
+})
+
 test('an unknown operation answers 404', () => {
   assert.equal(answer('GET', '/nope').status, 404)
 })
