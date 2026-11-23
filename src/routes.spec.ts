@@ -25,6 +25,15 @@ test('GET /uptime body seconds is a non-negative integer', () => {
   assert.ok(seconds >= 0, 'seconds should be non-negative')
 })
 
+test('GET /uptime body seconds reflects floored process.uptime(), not a constant', () => {
+  const before = Math.floor(process.uptime())
+  const result = answer('GET', '/uptime')
+  const after = Math.floor(process.uptime())
+  const seconds = result.body['seconds'] as number
+  assert.ok(seconds >= before, 'seconds should be at least the floored uptime before the call')
+  assert.ok(seconds <= after, 'seconds should be at most the floored uptime after the call')
+})
+
 test('POST /uptime is not served and answers 404', () => {
   assert.equal(answer('POST', '/uptime').status, 404)
 })
