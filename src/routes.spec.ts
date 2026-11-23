@@ -13,17 +13,3 @@ test('GET /ping answers 200 {"pong":true}', () => {
 test('an unknown operation answers 404', () => {
   assert.equal(answer('GET', '/nope').status, 404)
 })
-
-test('GET /time answers 200', () => {
-  assert.equal(answer('GET', '/time').status, 200)
-})
-
-test('GET /time body now is an ISO-8601 string', () => {
-  const result = answer('GET', '/time')
-  assert.equal(typeof result.body.now, 'string', 'body.now is a string')
-  assert.ok(!isNaN(Date.parse(result.body.now as string)), 'body.now is a valid ISO-8601 string')
-})
-
-test('POST /time answers 404', () => {
-  assert.equal(answer('POST', '/time').status, 404)
-})
