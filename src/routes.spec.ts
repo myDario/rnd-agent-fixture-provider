@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { mock, test } from 'node:test'
 import { answer } from './routes'
 
 test('GET /health answers 200 {"status":"ok"}', () => {
@@ -18,20 +18,29 @@ test('GET /uptime answers 200', () => {
   assert.equal(answer('GET', '/uptime').status, 200)
 })
 
-test('GET /uptime body seconds is a non-negative integer', () => {
-  const result = answer('GET', '/uptime')
-  const seconds = result.body['seconds'] as number
-  assert.ok(Number.isInteger(seconds), 'seconds should be an integer')
-  assert.ok(seconds >= 0, 'seconds should be non-negative')
+test('GET /uptime floors a fractional uptime value (3.9 → 3)', () => {
+  const stub = mock.method(process, 'uptime', () => 3.9)
+  try {
+    const result = answer('GET', '/uptime')
+    assert.equal(result.status, 200)
+    assert.equal(result.body['seconds'], 3, 'Math.floor(3.9) should be 3')
+  } finally {
+    stub.mock.restore()
+  }
 })
 
-test('GET /uptime body seconds reflects floored process.uptime(), not a constant', () => {
-  const before = Math.floor(process.uptime())
-  const result = answer('GET', '/uptime')
-  const after = Math.floor(process.uptime())
-  const seconds = result.body['seconds'] as number
-  assert.ok(seconds >= before, 'seconds should be at least the floored uptime before the call')
-  assert.ok(seconds <= after, 'seconds should be at most the floored uptime after the call')
+test('GET /uptime recomputes on each call, not a cached constant', () => {
+  let callCount = 0
+  const uptimes = [7.1, 7.9]
+  const stub = mock.method(process, 'uptime', () => uptimes[callCount++] ?? 0)
+  try {
+    const first = answer('GET', '/uptime')
+    const second = answer('GET', '/uptime')
+    assert.equal(first.body['seconds'], 7, 'Math.floor(7.1) should be 7')
+    assert.equal(second.body['seconds'], 7, 'Math.floor(7.9) should be 7')
+  } finally {
+    stub.mock.restore()
+  }
 })
 
 test('POST /uptime is not served and answers 404', () => {
