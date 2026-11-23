@@ -32,14 +32,6 @@
         "status": 200,
         "body": { "pong": true }
       }
-    },
-    {
-      "method": "GET",
-      "path": "/time",
-      "response": {
-        "status": 200,
-        "body": { "now": "2024-01-01T00:00:00.000Z" }
-      }
     }
   ]
 }
