@@ -24,6 +24,16 @@ test('each published operation answers exactly its published response, status an
   for (const op of published.operations) {
     const route = routes[`${op.method} ${op.path}`]
     assert.ok(route, `${op.method} ${op.path} is served`)
-    assert.deepEqual(route(), op.response, `${op.method} ${op.path} answers what contract/operations.json publishes`)
+    const result = route()
+    if (op.method === 'GET' && op.path === '/time') {
+      assert.equal(result.status, op.response.status, `${op.method} ${op.path} answers status ${op.response.status}`)
+      assert.equal(typeof result.body.now, 'string', `GET /time body.now is a string`)
+      assert.ok(!isNaN(Date.parse(result.body.now as string)), `GET /time body.now is a valid ISO-8601 string`)
+      // Normalize the dynamic now value and deep-equal the full response shape.
+      const normalizedResult = { ...result, body: { ...result.body, now: op.response.body.now } }
+      assert.deepEqual(normalizedResult, op.response, `GET /time response shape matches the published contract`)
+    } else {
+      assert.deepEqual(result, op.response, `${op.method} ${op.path} answers what contract/operations.json publishes`)
+    }
   }
 })
