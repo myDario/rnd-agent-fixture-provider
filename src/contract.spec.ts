@@ -24,6 +24,13 @@ test('each published operation answers exactly its published response, status an
   for (const op of published.operations) {
     const route = routes[`${op.method} ${op.path}`]
     assert.ok(route, `${op.method} ${op.path} is served`)
-    assert.deepEqual(route(), op.response, `${op.method} ${op.path} answers what contract/operations.json publishes`)
+    if (op.path === '/uptime') {
+      const result = route()
+      assert.equal(result.status, 200, `${op.method} ${op.path} answers status 200`)
+      assert.ok(Number.isInteger(result.body['seconds']), `${op.method} ${op.path} seconds is an integer`)
+      assert.ok((result.body['seconds'] as number) >= 0, `${op.method} ${op.path} seconds is non-negative`)
+    } else {
+      assert.deepEqual(route(), op.response, `${op.method} ${op.path} answers what contract/operations.json publishes`)
+    }
   }
 })

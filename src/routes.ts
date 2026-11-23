@@ -17,6 +17,7 @@ export const routes: Readonly<Record<string, Route>> = Object.freeze({
   'GET /version': (): RouteAnswer => ({ status: 200, body: { version } }),
   'GET /ready': (): RouteAnswer => ({ status: 200, body: { ready: true } }),
   'GET /ping': (): RouteAnswer => ({ status: 200, body: { pong: true } }),
+  'GET /uptime': (): RouteAnswer => ({ status: 200, body: { seconds: Math.floor(process.uptime()) } }),
 })
 
 /** The answer for a request: its route's, or 404. */
